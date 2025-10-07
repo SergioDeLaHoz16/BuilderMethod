@@ -1,0 +1,196 @@
+{
+  "aws": {
+    "description": "Ejemplo de aprovisionamiento AWS con familia completa de recursos",
+    "request": {
+      "provider": "aws",
+      "params": {
+        "vm": {
+          "instanceType": "t3.medium",
+          "region": "us-east-1",
+          "vpcId": "vpc-0123456789abcdef0",
+          "ami": "ami-0c55b159cbfafe1f0"
+        },
+        "network": {
+          "vpcId": "vpc-0123456789abcdef0",
+          "subnet": "10.0.1.0/24",
+          "securityGroup": "sg-0123456789abcdef0",
+          "region": "us-east-1"
+        },
+        "disk": {
+          "volumeType": "gp3",
+          "sizeGB": 100,
+          "encrypted": true
+        }
+      }
+    }
+  },
+  "azure": {
+    "description": "Ejemplo de aprovisionamiento Azure con familia completa de recursos",
+    "request": {
+      "provider": "azure",
+      "params": {
+        "vm": {
+          "vmSize": "Standard_D2s_v3",
+          "location": "eastus",
+          "resourceGroup": "my-resource-group",
+          "imageReference": "UbuntuServer:18.04-LTS"
+        },
+        "network": {
+          "virtualNetwork": "my-vnet",
+          "subnetName": "default",
+          "networkSecurityGroup": "my-nsg",
+          "region": "eastus"
+        },
+        "disk": {
+          "diskSku": "Premium_LRS",
+          "sizeGB": 128,
+          "managedDisk": true
+        }
+      }
+    }
+  },
+  "gcp": {
+    "description": "Ejemplo de aprovisionamiento GCP con familia completa de recursos",
+    "request": {
+      "provider": "gcp",
+      "params": {
+        "vm": {
+          "machineType": "n1-standard-2",
+          "zone": "us-central1-a",
+          "project": "my-project-12345",
+          "image": "debian-11-bullseye-v20240110"
+        },
+        "network": {
+          "networkName": "default",
+          "subnetworkName": "default",
+          "firewallTag": "web-server",
+          "region": "us-central1"
+        },
+        "disk": {
+          "diskType": "pd-ssd",
+          "sizeGB": 50,
+          "autoDelete": true
+        }
+      }
+    }
+  },
+  "onpremise": {
+    "description": "Ejemplo de aprovisionamiento On-Premise con familia completa de recursos",
+    "request": {
+      "provider": "onpremise",
+      "params": {
+        "vm": {
+          "cpu": 4,
+          "ram": 16,
+          "hypervisor": "VMware ESXi",
+          "network": "vlan-100"
+        },
+        "network": {
+          "physicalInterface": "eth0",
+          "vlanId": 100,
+          "firewallPolicy": "allow-web-traffic",
+          "region": "datacenter-1"
+        },
+        "disk": {
+          "storagePool": "SAN-Pool-01",
+          "sizeGB": 200,
+          "raidLevel": "RAID5"
+        }
+      }
+    }
+  },
+  "examples_multiple_providers": [
+    {
+      "name": "Small AWS Development Server",
+      "provider": "aws",
+      "params": {
+        "vm": {
+          "instanceType": "t3.small",
+          "region": "us-west-2",
+          "vpcId": "vpc-dev-0123",
+          "ami": "ami-ubuntu-22.04"
+        },
+        "network": {
+          "vpcId": "vpc-dev-0123",
+          "subnet": "10.0.2.0/24",
+          "securityGroup": "sg-dev-web",
+          "region": "us-west-2"
+        },
+        "disk": {
+          "volumeType": "gp2",
+          "sizeGB": 30,
+          "encrypted": false
+        }
+      }
+    },
+    {
+      "name": "Azure Production Web Server",
+      "provider": "azure",
+      "params": {
+        "vm": {
+          "vmSize": "Standard_D4s_v3",
+          "location": "westeurope",
+          "resourceGroup": "prod-web-rg",
+          "imageReference": "WindowsServer:2022-Datacenter"
+        },
+        "network": {
+          "virtualNetwork": "prod-vnet",
+          "subnetName": "web-subnet",
+          "networkSecurityGroup": "prod-web-nsg",
+          "region": "westeurope"
+        },
+        "disk": {
+          "diskSku": "Premium_LRS",
+          "sizeGB": 256,
+          "managedDisk": true
+        }
+      }
+    },
+    {
+      "name": "GCP Machine Learning Instance",
+      "provider": "gcp",
+      "params": {
+        "vm": {
+          "machineType": "n1-highmem-8",
+          "zone": "us-west1-b",
+          "project": "ml-project-456",
+          "image": "ubuntu-2004-focal-v20240110"
+        },
+        "network": {
+          "networkName": "ml-network",
+          "subnetworkName": "ml-subnet",
+          "firewallTag": "ml-server",
+          "region": "us-west1"
+        },
+        "disk": {
+          "diskType": "pd-ssd",
+          "sizeGB": 500,
+          "autoDelete": false
+        }
+      }
+    },
+    {
+      "name": "On-Premise Database Server",
+      "provider": "onpremise",
+      "params": {
+        "vm": {
+          "cpu": 16,
+          "ram": 64,
+          "hypervisor": "KVM",
+          "network": "vlan-200"
+        },
+        "network": {
+          "physicalInterface": "eth1",
+          "vlanId": 200,
+          "firewallPolicy": "database-policy",
+          "region": "datacenter-2"
+        },
+        "disk": {
+          "storagePool": "SSD-Pool-High-Performance",
+          "sizeGB": 1000,
+          "raidLevel": "RAID10"
+        }
+      }
+    }
+  ]
+}

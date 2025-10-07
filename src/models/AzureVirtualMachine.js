@@ -8,16 +8,16 @@ class AzureVirtualMachine extends IVirtualMachine {
   /**
    * @param {string} id - Identificador único de la VM
    * @param {string} vmSize - Tamaño de la VM (Standard_B1s, etc.)
+   * @param {string} location - Ubicación de Azure
    * @param {string} resourceGroup - Grupo de recursos de Azure
-   * @param {string} image - Imagen del sistema operativo
-   * @param {string} virtualNetwork - Red virtual de Azure
+   * @param {string} imageReference - Referencia de imagen del sistema operativo
    */
-  constructor(id, vmSize, resourceGroup, image, virtualNetwork) {
+  constructor(id, vmSize, location, resourceGroup, imageReference) {
     super(id, 'active');
     this.vmSize = vmSize;
+    this.location = location;
     this.resourceGroup = resourceGroup;
-    this.image = image;
-    this.virtualNetwork = virtualNetwork;
+    this.imageReference = imageReference;
   }
 
   getId() {
@@ -38,9 +38,9 @@ class AzureVirtualMachine extends IVirtualMachine {
       provider: 'azure',
       status: this.status,
       vm_size: this.vmSize,
+      region: this.location,
       resource_group: this.resourceGroup,
-      image: this.image,
-      virtual_network: this.virtualNetwork
+      image: this.imageReference
     };
   }
 }
