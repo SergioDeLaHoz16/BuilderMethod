@@ -1,0 +1,89 @@
+{
+  "description": "Ejemplos de solicitudes de aprovisionamiento para cada proveedor",
+  "provisioningRequests": [
+    {
+      "provider": "aws",
+      "description": "Instancia básica de AWS EC2 para desarrollo",
+      "params": {
+        "instanceType": "t2.micro",
+        "region": "us-east-1",
+        "vpcId": "vpc-0a1b2c3d4e5f6g7h8",
+        "ami": "ami-0abcdef1234567890"
+      }
+    },
+    {
+      "provider": "aws",
+      "description": "Instancia de producción AWS EC2",
+      "params": {
+        "instanceType": "m5.large",
+        "region": "us-west-2",
+        "vpcId": "vpc-9i8h7g6f5e4d3c2b1",
+        "ami": "ami-9876543210fedcba0"
+      }
+    },
+    {
+      "provider": "azure",
+      "description": "VM de Azure para aplicaciones web",
+      "params": {
+        "vmSize": "Standard_B1s",
+        "resourceGroup": "web-apps-rg",
+        "image": "Ubuntu-20.04-LTS",
+        "virtualNetwork": "vnet-webapp-001"
+      }
+    },
+    {
+      "provider": "azure",
+      "description": "VM de Azure para base de datos",
+      "params": {
+        "vmSize": "Standard_D4s_v3",
+        "resourceGroup": "database-rg",
+        "image": "Windows-Server-2019",
+        "virtualNetwork": "vnet-database-001"
+      }
+    },
+    {
+      "provider": "gcp",
+      "description": "Instancia de GCP Compute Engine para microservicios",
+      "params": {
+        "machineType": "n1-standard-1",
+        "zone": "us-central1-a",
+        "disk": "100GB-SSD",
+        "project": "microservices-project-001"
+      }
+    },
+    {
+      "provider": "gcp",
+      "description": "Instancia de GCP para análisis de datos",
+      "params": {
+        "machineType": "n1-highmem-4",
+        "zone": "us-east1-b",
+        "disk": "500GB-SSD",
+        "project": "data-analytics-project-002"
+      }
+    },
+    {
+      "provider": "onpremise",
+      "description": "VM On-Premise para aplicación interna",
+      "params": {
+        "cpu": 4,
+        "ram": 16,
+        "disk": "500GB-HDD",
+        "network": "VLAN-100-Internal"
+      }
+    },
+    {
+      "provider": "onpremise",
+      "description": "VM On-Premise para servidor de archivos",
+      "params": {
+        "cpu": 8,
+        "ram": 32,
+        "disk": "2TB-RAID5",
+        "network": "VLAN-200-Storage"
+      }
+    }
+  ],
+  "usageInstructions": {
+    "curl": "curl -X POST http://localhost:3000/api/provision -H 'Content-Type: application/json' -d '{\"provider\": \"aws\", \"params\": {\"instanceType\": \"t2.micro\", \"region\": \"us-east-1\", \"vpcId\": \"vpc-123\", \"ami\": \"ami-123\"}}'",
+    "swagger": "Visita http://localhost:3000/api-docs para probar los endpoints desde la interfaz de Swagger"
+  }
+}
