@@ -1,32 +1,41 @@
 const supabase = require('../config/database');
-const AWSVMFactory = require('../factories/AWSVMFactory');
-const AzureVMFactory = require('../factories/AzureVMFactory');
-const GCPVMFactory = require('../factories/GCPVMFactory');
-const OnPremiseVMFactory = require('../factories/OnPremiseVMFactory');
+const AWSFactory = require('../factories/AWSFactory');
+const AzureFactory = require('../factories/AzureFactory');
+const GCPFactory = require('../factories/GCPFactory');
+const OnPremiseFactory = require('../factories/OnPremiseFactory');
 const ProvisioningResult = require('../models/ProvisioningResult');
 const Logger = require('./Logger');
 
 /**
- * Servicio principal de aprovisionamiento de máquinas virtuales
- * Aplica el patrón MVC (Modelo) y principios SOLID:
- * - Single Responsibility: gestiona la lógica de aprovisionamiento
- * - Open/Closed: extensible a nuevos proveedores sin modificación
- * - Dependency Inversion: depende de abstracciones (VMFactory)
+ * Servicio principal de aprovisionamiento de recursos cloud
+ * Aplica patrones de diseño y principios SOLID:
+ * - Patrón Abstract Factory: crea familias de recursos relacionados (VM + Red + Disco)
+ * - Patrón MVC: gestiona la lógica de negocio (capa de servicio)
+ * - Single Responsibility: gestiona únicamente el aprovisionamiento
+ * - Open/Closed: extensible a nuevos proveedores sin modificar código existente
+ * - Dependency Inversion: depende de abstracciones (AbstractFactory)
  */
 class ProvisioningService {
   constructor() {
+    // Registro de factories concretos para cada proveedor
+    // Cada factory crea una familia completa de recursos (VM + Red + Disco)
     this.factories = {
-      aws: new AWSVMFactory(),
-      azure: new AzureVMFactory(),
-      gcp: new GCPVMFactory(),
-      onpremise: new OnPremiseVMFactory()
+      aws: new AWSFactory(),
+      azure: new AzureFactory(),
+      gcp: new GCPFactory(),
+      onpremise: new OnPremiseFactory()
     };
   }
 
   /**
-   * Aprovisiona una máquina virtual en el proveedor especificado
+   * Aprovisiona una familia completa de recursos (VM + Red + Disco)
+   * Garantiza consistencia: todos los recursos pertenecen al mismo proveedor
+   *
    * @param {string} provider - Proveedor de nube (aws, azure, gcp, onpremise)
-   * @param {Object} params - Parámetros específicos del proveedor
+   * @param {Object} params - Parámetros para VM, red y disco
+   * @param {Object} params.vm - Parámetros de la máquina virtual
+   * @param {Object} params.network - Parámetros de red
+   * @param {Object} params.disk - Parámetros de disco
    * @returns {Promise<ProvisioningResult>}
    */
   async provision(provider, params) {
@@ -39,9 +48,19 @@ class ProvisioningService {
         throw new Error(`Proveedor '${provider}' no soportado`);
       }
 
-      const vm = factory.createVM(params);
+      // Validar que existan los parámetros para los tres recursos
+      if (!params.vm || !params.network || !params.disk) {
+        throw new Error('Se requieren parámetros para VM, Network y Disk');
+      }
 
-      await this.saveVMToDatabase(vm);
+      // Crear familia de recursos usando Abstract Factory
+      // Garantiza que VM, red y disco sean compatibles entre sí
+      const vm = factory.createVirtualMachine(params.vm);
+      const network = factory.createNetwork(params.network);
+      const disk = factory.createDisk(params.disk);
+
+      // Guardar todos los recursos en la base de datos
+      await this.saveResourceFamily(vm, network, disk);
 
       const result = new ProvisioningResult(
         'success',
@@ -50,6 +69,7 @@ class ProvisioningService {
         new Date()
       );
 
+      // Obtener ID de la VM en la base de datos para logging
       const { data: vmData } = await supabase
         .from('virtual_machines')
         .select('id')
@@ -76,17 +96,40 @@ class ProvisioningService {
   }
 
   /**
-   * Guarda la máquina virtual en la base de datos
+   * Guarda la familia completa de recursos en la base de datos
+   * Garantiza atomicidad: si falla alguna inserción, se lanza error
+   *
    * @param {IVirtualMachine} vm - Instancia de máquina virtual
+   * @param {INetwork} network - Instancia de red
+   * @param {IDisk} disk - Instancia de disco
    * @private
    */
-  async saveVMToDatabase(vm) {
-    const { error } = await supabase
+  async saveResourceFamily(vm, network, disk) {
+    // Insertar máquina virtual
+    const { error: vmError } = await supabase
       .from('virtual_machines')
       .insert(vm.toJSON());
 
-    if (error) {
-      throw new Error(`Error al guardar VM en base de datos: ${error.message}`);
+    if (vmError) {
+      throw new Error(`Error al guardar VM: ${vmError.message}`);
+    }
+
+    // Insertar red
+    const { error: networkError } = await supabase
+      .from('networks')
+      .insert(network.toJSON());
+
+    if (networkError) {
+      throw new Error(`Error al guardar Network: ${networkError.message}`);
+    }
+
+    // Insertar disco
+    const { error: diskError } = await supabase
+      .from('disks')
+      .insert(disk.toJSON());
+
+    if (diskError) {
+      throw new Error(`Error al guardar Disk: ${diskError.message}`);
     }
   }
 
