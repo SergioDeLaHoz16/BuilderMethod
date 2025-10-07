@@ -8,7 +8,10 @@ const controller = new ProvisioningController();
  * @swagger
  * /api/provision:
  *   post:
- *     summary: Aprovisiona una nueva máquina virtual
+ *     summary: Aprovisiona una familia completa de recursos (VM + Red + Disco)
+ *     description: |
+ *       Utiliza el patrón Abstract Factory para crear una familia de recursos relacionados.
+ *       Garantiza consistencia: VM, Red y Disco pertenecen al mismo proveedor.
  *     tags: [Provisioning]
  *     requestBody:
  *       required: true
@@ -18,37 +21,81 @@ const controller = new ProvisioningController();
  *             $ref: '#/components/schemas/ProvisionRequest'
  *           examples:
  *             AWS:
+ *               summary: Aprovisionar recursos AWS
  *               value:
  *                 provider: "aws"
  *                 params:
- *                   instanceType: "t2.micro"
- *                   region: "us-east-1"
- *                   vpcId: "vpc-12345678"
- *                   ami: "ami-0abcdef1234567890"
+ *                   vm:
+ *                     instanceType: "t3.medium"
+ *                     region: "us-east-1"
+ *                     vpcId: "vpc-0123456789abcdef0"
+ *                     ami: "ami-0c55b159cbfafe1f0"
+ *                   network:
+ *                     vpcId: "vpc-0123456789abcdef0"
+ *                     subnet: "10.0.1.0/24"
+ *                     securityGroup: "sg-0123456789abcdef0"
+ *                     region: "us-east-1"
+ *                   disk:
+ *                     volumeType: "gp3"
+ *                     sizeGB: 100
+ *                     encrypted: true
  *             Azure:
+ *               summary: Aprovisionar recursos Azure
  *               value:
  *                 provider: "azure"
  *                 params:
- *                   vmSize: "Standard_B1s"
- *                   resourceGroup: "my-resource-group"
- *                   image: "Ubuntu-20.04"
- *                   virtualNetwork: "my-vnet"
+ *                   vm:
+ *                     vmSize: "Standard_D2s_v3"
+ *                     location: "eastus"
+ *                     resourceGroup: "my-resource-group"
+ *                     imageReference: "UbuntuServer:18.04-LTS"
+ *                   network:
+ *                     virtualNetwork: "my-vnet"
+ *                     subnetName: "default"
+ *                     networkSecurityGroup: "my-nsg"
+ *                     region: "eastus"
+ *                   disk:
+ *                     diskSku: "Premium_LRS"
+ *                     sizeGB: 128
+ *                     managedDisk: true
  *             GCP:
+ *               summary: Aprovisionar recursos GCP
  *               value:
  *                 provider: "gcp"
  *                 params:
- *                   machineType: "n1-standard-1"
- *                   zone: "us-central1-a"
- *                   disk: "100GB-SSD"
- *                   project: "my-gcp-project"
+ *                   vm:
+ *                     machineType: "n1-standard-2"
+ *                     zone: "us-central1-a"
+ *                     project: "my-project-12345"
+ *                     image: "debian-11-bullseye-v20240110"
+ *                   network:
+ *                     networkName: "default"
+ *                     subnetworkName: "default"
+ *                     firewallTag: "web-server"
+ *                     region: "us-central1"
+ *                   disk:
+ *                     diskType: "pd-ssd"
+ *                     sizeGB: 50
+ *                     autoDelete: true
  *             OnPremise:
+ *               summary: Aprovisionar recursos On-Premise
  *               value:
  *                 provider: "onpremise"
  *                 params:
- *                   cpu: 4
- *                   ram: 16
- *                   disk: "500GB"
- *                   network: "VLAN-100"
+ *                   vm:
+ *                     cpu: 4
+ *                     ram: 16
+ *                     hypervisor: "VMware ESXi"
+ *                     network: "vlan-100"
+ *                   network:
+ *                     physicalInterface: "eth0"
+ *                     vlanId: 100
+ *                     firewallPolicy: "allow-web-traffic"
+ *                     region: "datacenter-1"
+ *                   disk:
+ *                     storagePool: "SAN-Pool-01"
+ *                     sizeGB: 200
+ *                     raidLevel: "RAID5"
  *     responses:
  *       201:
  *         description: VM aprovisionada exitosamente
