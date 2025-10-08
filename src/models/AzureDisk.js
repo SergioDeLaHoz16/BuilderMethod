@@ -11,10 +11,12 @@ class AzureDisk extends IDisk {
    * @param {number} sizeGB - Tamaño del disco en GB
    * @param {boolean} managedDisk - Si es un disco administrado
    */
-  constructor(id, diskSku, sizeGB, managedDisk) {
+  constructor(id, diskSku, sizeGB, managedDisk, region, iops = null) {
     super(id, sizeGB);
     this.diskSku = diskSku;
     this.managedDisk = managedDisk;
+    this.region = region;
+    this.iops = iops;
   }
 
   getId() {
@@ -41,10 +43,12 @@ class AzureDisk extends IDisk {
       disk_id: this.id,
       provider: 'azure',
       size_gb: this.sizeGB,
+      region: this.region,
       config: {
         diskSku: this.diskSku,
         managedDisk: this.managedDisk
       },
+      iops: this.iops,
       status: 'provisioned',
       created_at: new Date().toISOString()
     };

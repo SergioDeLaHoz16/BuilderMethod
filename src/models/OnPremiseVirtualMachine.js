@@ -7,17 +7,26 @@ const IVirtualMachine = require('./IVirtualMachine');
 class OnPremiseVirtualMachine extends IVirtualMachine {
   /**
    * @param {string} id - Identificador único de la VM
-   * @param {number} cpu - Número de CPUs
-   * @param {number} ram - Cantidad de RAM en GB
-   * @param {string} disk - Configuración del disco
-   * @param {string} network - Configuración de red física
+   * @param {string} instanceType - Tipo de instancia (onprem-std1, etc.)
+   * @param {number} vcpus - Número de vCPUs (obligatorio)
+   * @param {number} memoryGB - Memoria RAM en GB (obligatorio)
+   * @param {string} hypervisor - Hipervisor (KVM, VMWare, etc.)
+   * @param {string} datacenter - Centro de datos
+   * @param {boolean} memoryOptimization - Optimización de memoria (opcional)
+   * @param {boolean} diskOptimization - Optimización de disco (opcional)
+   * @param {string} keyPairName - Clave SSH (opcional)
    */
-  constructor(id, cpu, ram, disk, network) {
+  constructor(id, instanceType, vcpus, memoryGB, hypervisor, datacenter, memoryOptimization = false, diskOptimization = false, keyPairName = null) {
     super(id, 'active');
-    this.cpu = cpu;
-    this.ram = ram;
-    this.disk = disk;
-    this.network = network;
+    this.instanceType = instanceType;
+    this.vcpus = vcpus;
+    this.memoryGB = memoryGB;
+    this.hypervisor = hypervisor;
+    this.datacenter = datacenter;
+    // Atributos opcionales
+    this.memoryOptimization = memoryOptimization;
+    this.diskOptimization = diskOptimization;
+    this.keyPairName = keyPairName;
   }
 
   getId() {
@@ -37,10 +46,14 @@ class OnPremiseVirtualMachine extends IVirtualMachine {
       vm_id: this.id,
       provider: 'onpremise',
       status: this.status,
-      cpu: this.cpu,
-      ram: this.ram,
-      disk: this.disk,
-      network: this.network
+      instance_type: this.instanceType,
+      vcpus: this.vcpus,
+      memory_gb: this.memoryGB,
+      hypervisor: this.hypervisor,
+      datacenter: this.datacenter,
+      memory_optimization: this.memoryOptimization,
+      disk_optimization: this.diskOptimization,
+      key_pair_name: this.keyPairName
     };
   }
 }

@@ -248,7 +248,7 @@ router.get('/logs', (req, res) => controller.getLogs(req, res));
  *                     type: object
  *           examples:
  *             AWS-Standard-Small:
- *               summary: AWS Standard VM Pequeña (t3.medium: 2 vCPU, 4 GB RAM)
+ *               summary: "AWS Standard VM Pequeña (t3.medium - 2 vCPU, 4 GB RAM)"
  *               value:
  *                 provider: "aws"
  *                 vmType: "standard"
@@ -270,7 +270,7 @@ router.get('/logs', (req, res) => controller.getLogs(req, res));
  *                     encrypted: true
  *                     iops: 3000
  *             AWS-Memory-Medium:
- *               summary: AWS Memory-Optimized VM Mediana (r5.xlarge: 4 vCPU, 32 GB RAM)
+ *               summary: "AWS Memory-Optimized VM Mediana (r5.xlarge - 4 vCPU, 32 GB RAM)"
  *               value:
  *                 provider: "aws"
  *                 vmType: "memory-optimized"
@@ -290,7 +290,7 @@ router.get('/logs', (req, res) => controller.getLogs(req, res));
  *                     encrypted: true
  *                     iops: 5000
  *             Azure-Compute-Large:
- *               summary: Azure Compute-Optimized VM Grande (F8s_v2: 8 vCPU, 16 GB RAM)
+ *               summary: "Azure Compute-Optimized VM Grande (F8s_v2 - 8 vCPU, 16 GB RAM)"
  *               value:
  *                 provider: "azure"
  *                 vmType: "compute-optimized"
@@ -309,7 +309,7 @@ router.get('/logs', (req, res) => controller.getLogs(req, res));
  *                     diskSku: "Premium_LRS"
  *                     managedDisk: true
  *             GCP-Standard-Medium:
- *               summary: GCP Standard VM Mediana (e2-standard-4: 4 vCPU, 16 GB RAM)
+ *               summary: "GCP Standard VM Mediana (e2-standard-4 - 4 vCPU, 16 GB RAM)"
  *               value:
  *                 provider: "gcp"
  *                 vmType: "standard"
@@ -329,7 +329,7 @@ router.get('/logs', (req, res) => controller.getLogs(req, res));
  *                     autoDelete: true
  *                     iops: 3000
  *             OnPremise-Memory-Small:
- *               summary: On-Premise Memory-Optimized VM Pequeña (2 vCPU, 16 GB RAM)
+ *               summary: "On-Premise Memory-Optimized VM Pequeña (2 vCPU, 16 GB RAM)"
  *               value:
  *                 provider: "onpremise"
  *                 vmType: "memory-optimized"

@@ -10,13 +10,18 @@ class AWSNetwork extends INetwork {
    * @param {string} vpcId - ID de la VPC en AWS
    * @param {string} subnet - Subnet de la red
    * @param {string} securityGroup - ID del security group
-   * @param {string} region - Región de AWS
+   * @param {string} region - Región de AWS (obligatorio)
+   * @param {Array<string>} firewallRules - Reglas de firewall (opcional)
+   * @param {boolean} publicIP - IP pública asignada (opcional)
    */
-  constructor(id, vpcId, subnet, securityGroup, region) {
+  constructor(id, vpcId, subnet, securityGroup, region, firewallRules = [], publicIP = false) {
     super(id, region);
     this.vpcId = vpcId;
     this.subnet = subnet;
     this.securityGroup = securityGroup;
+    // Atributos opcionales según el PDF
+    this.firewallRules = firewallRules;
+    this.publicIP = publicIP;
   }
 
   getId() {
@@ -28,7 +33,9 @@ class AWSNetwork extends INetwork {
       vpcId: this.vpcId,
       subnet: this.subnet,
       securityGroup: this.securityGroup,
-      region: this.region
+      region: this.region,
+      firewallRules: this.firewallRules,
+      publicIP: this.publicIP
     };
   }
 
@@ -45,6 +52,8 @@ class AWSNetwork extends INetwork {
         subnet: this.subnet,
         securityGroup: this.securityGroup
       },
+      firewall_rules: this.firewallRules,
+      public_ip: this.publicIP,
       status: 'provisioned',
       created_at: new Date().toISOString()
     };

@@ -12,11 +12,13 @@ class GCPNetwork extends INetwork {
    * @param {string} firewallTag - Tag de firewall
    * @param {string} region - Región de GCP
    */
-  constructor(id, networkName, subnetworkName, firewallTag, region) {
+  constructor(id, networkName, subnetworkName, firewallTag, region, firewallRules = [], publicIP = false) {
     super(id, region);
     this.networkName = networkName;
     this.subnetworkName = subnetworkName;
     this.firewallTag = firewallTag;
+    this.firewallRules = firewallRules;
+    this.publicIP = publicIP;
   }
 
   getId() {
@@ -45,6 +47,8 @@ class GCPNetwork extends INetwork {
         subnetworkName: this.subnetworkName,
         firewallTag: this.firewallTag
       },
+      firewall_rules: this.firewallRules,
+      public_ip: this.publicIP,
       status: 'provisioned',
       created_at: new Date().toISOString()
     };

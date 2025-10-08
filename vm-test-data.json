@@ -1,0 +1,210 @@
+{
+  "test_cases": [
+    {
+      "name": "AWS Standard VM - Small",
+      "provider": "aws",
+      "vmType": "standard",
+      "size": "small",
+      "region": "us-east-1",
+      "additionalParams": {
+        "keyPairName": "my-aws-key",
+        "network": {
+          "firewallRules": ["HTTP", "HTTPS", "SSH"],
+          "publicIP": true
+        },
+        "disk": {
+          "sizeGB": 100,
+          "iops": 3000
+        }
+      }
+    },
+    {
+      "name": "AWS Memory-Optimized VM - Medium",
+      "provider": "aws",
+      "vmType": "memory-optimized",
+      "size": "medium",
+      "region": "us-west-2",
+      "additionalParams": {
+        "keyPairName": "my-aws-key",
+        "network": {
+          "firewallRules": ["SSH"],
+          "publicIP": false
+        },
+        "disk": {
+          "sizeGB": 200,
+          "iops": 5000
+        }
+      }
+    },
+    {
+      "name": "AWS Compute-Optimized VM - Large",
+      "provider": "aws",
+      "vmType": "compute-optimized",
+      "size": "large",
+      "region": "eu-west-1",
+      "additionalParams": {
+        "keyPairName": "my-aws-key",
+        "network": {
+          "firewallRules": ["HTTP", "HTTPS"],
+          "publicIP": true
+        },
+        "disk": {
+          "sizeGB": 150
+        }
+      }
+    },
+    {
+      "name": "Azure Standard VM - Small",
+      "provider": "azure",
+      "vmType": "standard",
+      "size": "small",
+      "region": "eastus",
+      "additionalParams": {
+        "keyPairName": "my-azure-key",
+        "network": {
+          "firewallRules": ["HTTP", "HTTPS"],
+          "publicIP": true
+        },
+        "disk": {
+          "sizeGB": 128
+        }
+      }
+    },
+    {
+      "name": "Azure Memory-Optimized VM - Medium",
+      "provider": "azure",
+      "vmType": "memory-optimized",
+      "size": "medium",
+      "region": "westeurope",
+      "additionalParams": {
+        "keyPairName": "my-azure-key",
+        "network": {
+          "firewallRules": ["SSH", "RDP"],
+          "publicIP": false
+        },
+        "disk": {
+          "sizeGB": 256,
+          "iops": 4000
+        }
+      }
+    },
+    {
+      "name": "Azure Compute-Optimized VM - Large",
+      "provider": "azure",
+      "vmType": "compute-optimized",
+      "size": "large",
+      "region": "westus2",
+      "additionalParams": {
+        "network": {
+          "firewallRules": ["HTTP"],
+          "publicIP": true
+        },
+        "disk": {
+          "sizeGB": 512
+        }
+      }
+    },
+    {
+      "name": "GCP Standard VM - Small",
+      "provider": "gcp",
+      "vmType": "standard",
+      "size": "small",
+      "region": "us-central1",
+      "additionalParams": {
+        "keyPairName": "my-gcp-key",
+        "network": {
+          "firewallRules": ["HTTP", "HTTPS", "SSH"],
+          "publicIP": true
+        },
+        "disk": {
+          "sizeGB": 100
+        }
+      }
+    },
+    {
+      "name": "GCP Memory-Optimized VM - Medium",
+      "provider": "gcp",
+      "vmType": "memory-optimized",
+      "size": "medium",
+      "region": "europe-west1",
+      "additionalParams": {
+        "keyPairName": "my-gcp-key",
+        "network": {
+          "firewallRules": ["SSH"],
+          "publicIP": false
+        },
+        "disk": {
+          "sizeGB": 200,
+          "iops": 3500
+        }
+      }
+    },
+    {
+      "name": "GCP Compute-Optimized VM - Large",
+      "provider": "gcp",
+      "vmType": "compute-optimized",
+      "size": "large",
+      "region": "asia-east1",
+      "additionalParams": {
+        "network": {
+          "firewallRules": ["HTTP", "HTTPS"],
+          "publicIP": true
+        },
+        "disk": {
+          "sizeGB": 150
+        }
+      }
+    },
+    {
+      "name": "OnPremise Standard VM - Small",
+      "provider": "onpremise",
+      "vmType": "standard",
+      "size": "small",
+      "region": "datacenter-1",
+      "additionalParams": {
+        "keyPairName": "my-onprem-key",
+        "network": {
+          "firewallRules": ["HTTP", "HTTPS", "SSH"],
+          "publicIP": false
+        },
+        "disk": {
+          "sizeGB": 100
+        }
+      }
+    },
+    {
+      "name": "OnPremise Memory-Optimized VM - Medium",
+      "provider": "onpremise",
+      "vmType": "memory-optimized",
+      "size": "medium",
+      "region": "datacenter-2",
+      "additionalParams": {
+        "keyPairName": "my-onprem-key",
+        "network": {
+          "firewallRules": ["SSH"],
+          "publicIP": false
+        },
+        "disk": {
+          "sizeGB": 256
+        }
+      }
+    },
+    {
+      "name": "OnPremise Compute-Optimized VM - Large",
+      "provider": "onpremise",
+      "vmType": "compute-optimized",
+      "size": "large",
+      "region": "datacenter-3",
+      "additionalParams": {
+        "network": {
+          "firewallRules": ["HTTP"],
+          "publicIP": false
+        },
+        "disk": {
+          "sizeGB": 200,
+          "iops": 2000
+        }
+      }
+    }
+  ]
+}

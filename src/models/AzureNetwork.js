@@ -12,11 +12,13 @@ class AzureNetwork extends INetwork {
    * @param {string} networkSecurityGroup - Nombre del NSG
    * @param {string} region - Región de Azure
    */
-  constructor(id, virtualNetwork, subnetName, networkSecurityGroup, region) {
+  constructor(id, virtualNetwork, subnetName, networkSecurityGroup, region, firewallRules = [], publicIP = false) {
     super(id, region);
     this.virtualNetwork = virtualNetwork;
     this.subnetName = subnetName;
     this.networkSecurityGroup = networkSecurityGroup;
+    this.firewallRules = firewallRules;
+    this.publicIP = publicIP;
   }
 
   getId() {
@@ -45,6 +47,8 @@ class AzureNetwork extends INetwork {
         subnetName: this.subnetName,
         networkSecurityGroup: this.networkSecurityGroup
       },
+      firewall_rules: this.firewallRules,
+      public_ip: this.publicIP,
       status: 'provisioned',
       created_at: new Date().toISOString()
     };

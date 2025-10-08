@@ -11,10 +11,12 @@ class GCPDisk extends IDisk {
    * @param {number} sizeGB - Tamaño del disco en GB
    * @param {boolean} autoDelete - Si el disco se elimina automáticamente
    */
-  constructor(id, diskType, sizeGB, autoDelete) {
+  constructor(id, diskType, sizeGB, autoDelete, region, iops = null) {
     super(id, sizeGB);
     this.diskType = diskType;
     this.autoDelete = autoDelete;
+    this.region = region;
+    this.iops = iops;
   }
 
   getId() {
@@ -41,10 +43,12 @@ class GCPDisk extends IDisk {
       disk_id: this.id,
       provider: 'gcp',
       size_gb: this.sizeGB,
+      region: this.region,
       config: {
         diskType: this.diskType,
         autoDelete: this.autoDelete
       },
+      iops: this.iops,
       status: 'provisioned',
       created_at: new Date().toISOString()
     };

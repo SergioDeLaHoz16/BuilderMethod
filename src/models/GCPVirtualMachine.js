@@ -11,13 +11,25 @@ class GCPVirtualMachine extends IVirtualMachine {
    * @param {string} zone - Zona de GCP
    * @param {string} disk - Configuración del disco
    * @param {string} project - Proyecto de GCP
+   * @param {number} vcpus - Número de vCPUs (obligatorio)
+   * @param {number} memoryGB - Memoria RAM en GB (obligatorio)
+   * @param {boolean} memoryOptimization - Optimización de memoria (opcional)
+   * @param {boolean} diskOptimization - Optimización de disco (opcional)
+   * @param {string} keyPairName - Clave SSH (opcional)
    */
-  constructor(id, machineType, zone, disk, project) {
+  constructor(id, machineType, zone, disk, project, vcpus, memoryGB, memoryOptimization = false, diskOptimization = false, keyPairName = null) {
     super(id, 'active');
     this.machineType = machineType;
     this.zone = zone;
     this.disk = disk;
     this.project = project;
+    // Atributos obligatorios según el PDF
+    this.vcpus = vcpus;
+    this.memoryGB = memoryGB;
+    // Atributos opcionales
+    this.memoryOptimization = memoryOptimization;
+    this.diskOptimization = diskOptimization;
+    this.keyPairName = keyPairName;
   }
 
   getId() {
@@ -40,7 +52,12 @@ class GCPVirtualMachine extends IVirtualMachine {
       machine_type: this.machineType,
       zone: this.zone,
       disk: this.disk,
-      project: this.project
+      project: this.project,
+      vcpus: this.vcpus,
+      memory_gb: this.memoryGB,
+      memory_optimization: this.memoryOptimization,
+      disk_optimization: this.diskOptimization,
+      key_pair_name: this.keyPairName
     };
   }
 }

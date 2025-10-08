@@ -12,11 +12,13 @@ class OnPremiseNetwork extends INetwork {
    * @param {string} firewallPolicy - Política de firewall aplicada
    * @param {string} region - Ubicación física
    */
-  constructor(id, physicalInterface, vlanId, firewallPolicy, region) {
+  constructor(id, physicalInterface, vlanId, firewallPolicy, region, firewallRules = [], publicIP = false) {
     super(id, region);
     this.physicalInterface = physicalInterface;
     this.vlanId = vlanId;
     this.firewallPolicy = firewallPolicy;
+    this.firewallRules = firewallRules;
+    this.publicIP = publicIP;
   }
 
   getId() {
@@ -45,6 +47,8 @@ class OnPremiseNetwork extends INetwork {
         vlanId: this.vlanId,
         firewallPolicy: this.firewallPolicy
       },
+      firewall_rules: this.firewallRules,
+      public_ip: this.publicIP,
       status: 'provisioned',
       created_at: new Date().toISOString()
     };

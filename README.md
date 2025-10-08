@@ -83,9 +83,10 @@ PORT=3000
 
 4. **Ejecutar migraciones de base de datos**
 
-En el SQL Editor de Supabase, ejecutar:
+En el SQL Editor de Supabase, ejecutar en orden:
 - `supabase/migrations/20251007151213_create_vm_provisioning_schema.sql`
 - `supabase/migrations/20251007152000_add_network_and_disk_tables.sql`
+- `supabase/migrations/20251008000000_add_vm_attributes.sql`
 
 5. **Iniciar el servidor**
 ```bash
@@ -323,7 +324,10 @@ curl http://localhost:3000/api/logs
 
 ## Datos de Prueba
 
-El archivo `builder-test-data.json` contiene ejemplos completos para cada combinación de proveedor, tipo y tamaño.
+El proyecto incluye archivos de prueba:
+- `vm-test-data.json` - Ejemplos con Builder + Director (12 configuraciones completas)
+- `test-data.json` - Ejemplos con Abstract Factory
+- `sample-data.json` - Datos de ejemplo adicionales
 
 ## Estructura del Proyecto
 
@@ -365,8 +369,12 @@ vm-provisioning-api/
 │   ├── app.js                       # Express app
 │   └── server.js                    # Entry point
 ├── supabase/migrations/             # Migraciones de BD
-├── builder-test-data.json           # Datos de prueba Builder
+│   ├── 20251007151213_create_vm_provisioning_schema.sql
+│   ├── 20251007152000_add_network_and_disk_tables.sql
+│   └── 20251008000000_add_vm_attributes.sql
+├── vm-test-data.json                # Datos de prueba Builder
 ├── test-data.json                   # Datos de prueba Factory
+├── sample-data.json                 # Datos adicionales
 ├── .env                             # Variables de entorno
 ├── package.json
 └── README.md
@@ -454,11 +462,12 @@ Asigna automáticamente vCPU y RAM según tipo de VM.
 
 ## Ejemplos de Uso
 
-Ver `builder-test-data.json` para ejemplos completos de:
+Ver `vm-test-data.json` para ejemplos completos de:
 - 12 configuraciones predefinidas
-- Todos los proveedores
-- Todos los tipos de VM
-- Todos los tamaños
+- Todos los proveedores (AWS, Azure, GCP, OnPremise)
+- Todos los tipos de VM (standard, memory-optimized, compute-optimized)
+- Todos los tamaños (small, medium, large)
+- Parámetros obligatorios y opcionales
 
 ## Requisitos Cumplidos
 
@@ -522,7 +531,8 @@ Sí, siguiendo el Open/Closed Principle:
 
 1. Usar Swagger UI en `/api-docs`
 2. Usar `curl` con ejemplos del README
-3. Usar datos de `builder-test-data.json`
+3. Usar datos de `vm-test-data.json` para Builder
+4. Usar datos de `test-data.json` para Factory
 
 ## Soporte
 

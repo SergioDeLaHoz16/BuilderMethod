@@ -11,13 +11,25 @@ class AWSVirtualMachine extends IVirtualMachine {
    * @param {string} region - Región de AWS
    * @param {string} vpcId - ID de la VPC
    * @param {string} ami - Amazon Machine Image ID
+   * @param {number} vcpus - Número de vCPUs (obligatorio)
+   * @param {number} memoryGB - Memoria RAM en GB (obligatorio)
+   * @param {boolean} memoryOptimization - Optimización de memoria (opcional)
+   * @param {boolean} diskOptimization - Optimización de disco (opcional)
+   * @param {string} keyPairName - Clave SSH (opcional)
    */
-  constructor(id, instanceType, region, vpcId, ami) {
+  constructor(id, instanceType, region, vpcId, ami, vcpus, memoryGB, memoryOptimization = false, diskOptimization = false, keyPairName = null) {
     super(id, 'active');
     this.instanceType = instanceType;
     this.region = region;
     this.vpcId = vpcId;
     this.ami = ami;
+    // Atributos obligatorios según el PDF
+    this.vcpus = vcpus;
+    this.memoryGB = memoryGB;
+    // Atributos opcionales
+    this.memoryOptimization = memoryOptimization;
+    this.diskOptimization = diskOptimization;
+    this.keyPairName = keyPairName;
   }
 
   getId() {
@@ -40,7 +52,12 @@ class AWSVirtualMachine extends IVirtualMachine {
       instance_type: this.instanceType,
       region: this.region,
       vpc_id: this.vpcId,
-      ami: this.ami
+      ami: this.ami,
+      vcpus: this.vcpus,
+      memory_gb: this.memoryGB,
+      memory_optimization: this.memoryOptimization,
+      disk_optimization: this.diskOptimization,
+      key_pair_name: this.keyPairName
     };
   }
 }

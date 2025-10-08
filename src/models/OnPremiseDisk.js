@@ -11,10 +11,12 @@ class OnPremiseDisk extends IDisk {
    * @param {number} sizeGB - Tamaño del disco en GB
    * @param {string} raidLevel - Nivel de RAID (RAID0, RAID1, RAID5, etc.)
    */
-  constructor(id, storagePool, sizeGB, raidLevel) {
+  constructor(id, storagePool, sizeGB, raidLevel, region, iops = null) {
     super(id, sizeGB);
     this.storagePool = storagePool;
     this.raidLevel = raidLevel;
+    this.region = region;
+    this.iops = iops;
   }
 
   getId() {
@@ -41,10 +43,12 @@ class OnPremiseDisk extends IDisk {
       disk_id: this.id,
       provider: 'onpremise',
       size_gb: this.sizeGB,
+      region: this.region,
       config: {
         storagePool: this.storagePool,
         raidLevel: this.raidLevel
       },
+      iops: this.iops,
       status: 'provisioned',
       created_at: new Date().toISOString()
     };
