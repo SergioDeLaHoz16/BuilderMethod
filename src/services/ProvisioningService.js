@@ -1,10 +1,11 @@
 const supabase = require('../config/database');
-const AWSFactory = require('../factories/AWSFactory');
-const AzureFactory = require('../factories/AzureFactory');
-const GCPFactory = require('../factories/GCPFactory');
-const OnPremiseFactory = require('../factories/OnPremiseFactory');
+const { AWSFactory } = require('../factories/AWSFactory');
+const { AzureFactory } = require('../factories/AzureFactory');
+const { GCPFactory } = require('../factories/GCPFactory');
+const { OnPremiseFactory } = require('../factories/OnPremiseFactory');
 const ProvisioningResult = require('../models/ProvisioningResult');
 const Logger = require('./Logger');
+
 
 /**
  * Servicio principal de aprovisionamiento de recursos cloud

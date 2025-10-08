@@ -73,4 +73,4 @@ class AWSFactory extends AbstractFactory {
   }
 }
 
-module.exports = AWSFactory;
+module.exports = { AWSFactory };

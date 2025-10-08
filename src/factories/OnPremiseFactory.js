@@ -73,4 +73,4 @@ class OnPremiseFactory extends AbstractFactory {
   }
 }
 
-module.exports = OnPremiseFactory;
+module.exports = { OnPremiseFactory };

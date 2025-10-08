@@ -1,11 +1,27 @@
+// const supabase = require('../config/database');
+// const AWSVirtualMachineBuilder = require('../builders/AWSVirtualMachineBuilder');
+// const AzureVirtualMachineBuilder = require('../builders/AzureVirtualMachineBuilder');
+// const GCPVirtualMachineBuilder = require('../builders/GCPVirtualMachineBuilder');
+// const OnPremiseVirtualMachineBuilder = require('../builders/OnPremiseVirtualMachineBuilder');
+// const Director = require('../directors/Director');
+// const ProvisioningResult = require('../models/ProvisioningResult');
+// const Logger = require('./Logger');
+
 const supabase = require('../config/database');
-const AWSVirtualMachineBuilder = require('../builders/AWSVirtualMachineBuilder');
-const AzureVirtualMachineBuilder = require('../builders/AzureVirtualMachineBuilder');
-const GCPVirtualMachineBuilder = require('../builders/GCPVirtualMachineBuilder');
-const OnPremiseVirtualMachineBuilder = require('../builders/OnPremiseVirtualMachineBuilder');
+const { AWSVirtualMachineBuilder } = require('../builders/AWSVirtualMachineBuilder');
+const { AzureVirtualMachineBuilder } = require('../builders/AzureVirtualMachineBuilder');
+const { GCPVirtualMachineBuilder } = require('../builders/GCPVirtualMachineBuilder');
+const { OnPremiseVirtualMachineBuilder } = require('../builders/OnPremiseVirtualMachineBuilder');
+
+const { AWSFactory } = require('../factories/AWSFactory');
+const { AzureFactory } = require('../factories/AzureFactory');
+const { GCPFactory } = require('../factories/GCPFactory');
+const { OnPremiseFactory } = require('../factories/OnPremiseFactory');
+
 const Director = require('../directors/Director');
 const ProvisioningResult = require('../models/ProvisioningResult');
 const Logger = require('./Logger');
+
 
 /**
  * Servicio de aprovisionamiento usando Builder + Director
@@ -17,15 +33,13 @@ const Logger = require('./Logger');
  */
 class ProvisioningServiceBuilder {
   constructor() {
-    // Registro de builders por proveedor
     this.builders = {
-      aws: new AWSVirtualMachineBuilder(),
-      azure: new AzureVirtualMachineBuilder(),
-      gcp: new GCPVirtualMachineBuilder(),
-      onpremise: new OnPremiseVirtualMachineBuilder()
+      aws: new AWSVirtualMachineBuilder(new AWSFactory()),
+      azure: new AzureVirtualMachineBuilder(new AzureFactory()),
+      gcp: new GCPVirtualMachineBuilder(new GCPFactory()),
+      onpremise: new OnPremiseVirtualMachineBuilder(new OnPremiseFactory())
     };
   }
-
   /**
    * Aprovisiona VM usando Builder + Director
    * El Director determina automáticamente vCPU y RAM según tipo

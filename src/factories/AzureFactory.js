@@ -73,4 +73,4 @@ class AzureFactory extends AbstractFactory {
   }
 }
 
-module.exports = AzureFactory;
+module.exports = { AzureFactory };

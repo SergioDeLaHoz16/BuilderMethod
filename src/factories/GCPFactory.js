@@ -73,4 +73,4 @@ class GCPFactory extends AbstractFactory {
   }
 }
 
-module.exports = GCPFactory;
+module.exports = { GCPFactory };

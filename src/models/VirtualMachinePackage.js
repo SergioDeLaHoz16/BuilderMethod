@@ -1,30 +1,28 @@
 /**
  * Clase que encapsula el paquete completo de recursos
- * Contiene VM, Network y Disk construidos por el Builder
  * Representa el producto final del patrón Builder
+ * Contiene la VM, Red y Disco construidos mediante la Abstract Factory
  */
 class VirtualMachinePackage {
-  /**
-   * @param {IVirtualMachine} virtualMachine - Máquina virtual
-   * @param {INetwork} network - Recurso de red
-   * @param {IDisk} disk - Recurso de disco
-   */
-  constructor(virtualMachine, network, disk) {
-    this.virtualMachine = virtualMachine;
-    this.network = network;
-    this.disk = disk;
+  constructor() {
+    /** @type {IVirtualMachine | null} */
+    this.vm = null;
+    /** @type {INetwork | null} */
+    this.network = null;
+    /** @type {IDisk | null} */
+    this.disk = null;
   }
 
   /**
-   * Obtiene la máquina virtual
+   * Retorna la máquina virtual
    * @returns {IVirtualMachine}
    */
   getVirtualMachine() {
-    return this.virtualMachine;
+    return this.vm;
   }
 
   /**
-   * Obtiene el recurso de red
+   * Retorna la red
    * @returns {INetwork}
    */
   getNetwork() {
@@ -32,7 +30,7 @@ class VirtualMachinePackage {
   }
 
   /**
-   * Obtiene el recurso de disco
+   * Retorna el disco
    * @returns {IDisk}
    */
   getDisk() {
@@ -40,12 +38,12 @@ class VirtualMachinePackage {
   }
 
   /**
-   * Valida que todos los recursos sean del mismo proveedor
+   * Verifica si el paquete está completamente construido
    * @returns {boolean}
    */
   isValid() {
-    return this.virtualMachine && this.network && this.disk;
+    return this.vm !== null && this.network !== null && this.disk !== null;
   }
 }
 
-module.exports = VirtualMachinePackage;
+module.exports = { VirtualMachinePackage };

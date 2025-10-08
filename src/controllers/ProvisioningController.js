@@ -131,7 +131,7 @@ class ProvisioningController {
    * El Director asigna automáticamente vCPU y RAM según tipo y tamaño
    * @param {Request} req - Request de Express
    * @param {Response} res - Response de Express
-   */
+  */
   async provisionWithBuilder(req, res) {
     try {
       const { provider, vmType, size, region, params } = req.body;
@@ -144,15 +144,23 @@ class ProvisioningController {
         });
       }
 
-      // Aprovisionar usando Builder + Director
+      // 🔹 Desempaquetar los parámetros correctamente
+      const additionalParams = {
+        ...(params?.vm && { vm: params.vm }),
+        ...(params?.network && { network: params.network }),
+        ...(params?.disk && { disk: params.disk }),
+      };
+
+      // 🔹 Llamar al servicio Builder + Director
       const result = await this.serviceBuilder.provisionWithBuilder(
         provider,
         vmType,
         size,
         region,
-        params || {}
+        additionalParams
       );
 
+      // Manejo de errores del resultado
       if (result.status === 'error') {
         return res.status(500).json({
           status: 'error',
@@ -162,6 +170,7 @@ class ProvisioningController {
         });
       }
 
+      // Éxito
       return res.status(201).json({
         status: 'success',
         vmId: result.vmId,
@@ -170,12 +179,14 @@ class ProvisioningController {
       });
 
     } catch (error) {
+      console.error('❌ Error en provisionWithBuilder:', error);
       return res.status(500).json({
         status: 'error',
         message: error.message
       });
     }
   }
+
 }
 
 module.exports = ProvisioningController;
