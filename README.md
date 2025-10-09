@@ -487,14 +487,10 @@ Ver `vm-test-data.json` para ejemplos completos de:
 - ✅ RNF4: Escalabilidad
 - ✅ RNF5: Código legible y documentado
 
-## Licencia
-
-ISC License - Universidad Popular del Cesar
-
 ## Autor
-
-Especialización en Ingeniería de Software
-Universidad Popular del Cesar
+* **Sergio David De La Hoz Cordero**
+* **Estudiante de Ingenieria de Sistemas**
+* **Universidad Popular del Cesar**
 
 ## Enlaces Útiles
 
@@ -534,6 +530,4 @@ Sí, siguiendo el Open/Closed Principle:
 3. Usar datos de `vm-test-data.json` para Builder
 4. Usar datos de `test-data.json` para Factory
 
-## Soporte
 
-Contactar al equipo docente del curso de Patrones de Diseño de Software.
