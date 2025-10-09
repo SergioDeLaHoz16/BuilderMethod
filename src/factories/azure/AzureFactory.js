@@ -1,7 +1,7 @@
-const AbstractFactory = require('./AbstractFactory');
-const AzureVirtualMachine = require('../models/AzureVirtualMachine');
-const AzureNetwork = require('../models/AzureNetwork');
-const AzureDisk = require('../models/AzureDisk');
+const AbstractFactory = require('../AbstractFactory');
+const AzureVirtualMachine = require('../../models/AzureVirtualMachine');
+const AzureNetwork = require('../../models/AzureNetwork');
+const AzureDisk = require('../../models/AzureDisk');
 
 /**
  * Factory concreto para crear familia completa de recursos Azure

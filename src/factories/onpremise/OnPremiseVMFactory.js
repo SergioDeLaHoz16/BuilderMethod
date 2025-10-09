@@ -1,5 +1,5 @@
-const VMFactory = require('./VMFactory');
-const OnPremiseVirtualMachine = require('../models/OnPremiseVirtualMachine');
+const VMFactory = require('../VMFactory');
+const OnPremiseVirtualMachine = require('../../models/OnPremiseVirtualMachine');
 
 /**
  * Factory concreto para crear máquinas virtuales On-Premise

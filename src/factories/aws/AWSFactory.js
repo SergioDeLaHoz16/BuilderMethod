@@ -1,7 +1,7 @@
-const AbstractFactory = require('./AbstractFactory');
-const AWSVirtualMachine = require('../models/AWSVirtualMachine');
-const AWSNetwork = require('../models/AWSNetwork');
-const AWSDisk = require('../models/AWSDisk');
+const AbstractFactory = require('../AbstractFactory');
+const AWSVirtualMachine = require('../../models/aws/AWSVirtualMachine');
+const AWSNetwork = require('../../models/aws/AWSNetwork');
+const AWSDisk = require('../../models/aws/AWSDisk');
 
 /**
  * Factory concreto para crear familia completa de recursos AWS

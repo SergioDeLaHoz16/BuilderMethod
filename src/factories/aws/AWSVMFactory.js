@@ -1,5 +1,5 @@
-const VMFactory = require('./VMFactory');
-const AWSVirtualMachine = require('../models/AWSVirtualMachine');
+const VMFactory = require('../VMFactory');
+const AWSVirtualMachine = require('../../models/aws/AWSVirtualMachine');
 
 /**
  * Factory concreto para crear máquinas virtuales de AWS

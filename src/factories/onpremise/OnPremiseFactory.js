@@ -1,7 +1,7 @@
-const AbstractFactory = require('./AbstractFactory');
-const OnPremiseVirtualMachine = require('../models/OnPremiseVirtualMachine');
-const OnPremiseNetwork = require('../models/OnPremiseNetwork');
-const OnPremiseDisk = require('../models/OnPremiseDisk');
+const AbstractFactory = require('../AbstractFactory');
+const OnPremiseVirtualMachine = require('../../models/OnPremiseVirtualMachine');
+const OnPremiseNetwork = require('../../models/OnPremiseNetwork');
+const OnPremiseDisk = require('../../models/OnPremiseDisk');
 
 /**
  * Factory concreto para crear familia completa de recursos On-Premise

@@ -1,5 +1,5 @@
-const VMFactory = require('./VMFactory');
-const AzureVirtualMachine = require('../models/AzureVirtualMachine');
+const VMFactory = require('../VMFactory');
+const AzureVirtualMachine = require('../../models/AzureVirtualMachine');
 
 /**
  * Factory concreto para crear máquinas virtuales de Azure

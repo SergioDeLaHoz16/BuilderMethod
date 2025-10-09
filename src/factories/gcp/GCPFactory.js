@@ -1,7 +1,7 @@
-const AbstractFactory = require('./AbstractFactory');
-const GCPVirtualMachine = require('../models/GCPVirtualMachine');
-const GCPNetwork = require('../models/GCPNetwork');
-const GCPDisk = require('../models/GCPDisk');
+const AbstractFactory = require('../AbstractFactory');
+const GCPVirtualMachine = require('../../models/GCPVirtualMachine');
+const GCPNetwork = require('../../models/GCPNetwork');
+const GCPDisk = require('../../models/GCPDisk');
 
 /**
  * Factory concreto para crear familia completa de recursos Google Cloud Platform

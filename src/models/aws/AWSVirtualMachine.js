@@ -1,4 +1,4 @@
-const IVirtualMachine = require('./IVirtualMachine');
+const IVirtualMachine = require('../interfaces/IVirtualMachine');
 
 /**
  * Implementación concreta de máquina virtual para AWS
