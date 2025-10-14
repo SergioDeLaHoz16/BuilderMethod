@@ -1,5 +1,5 @@
 const VMFactory = require('../VMFactory');
-const OnPremiseVirtualMachine = require('../../models/OnPremiseVirtualMachine');
+const OnPremiseVirtualMachine = require('../../models/onpremise/OnPremiseVirtualMachine');
 
 /**
  * Factory concreto para crear máquinas virtuales On-Premise
@@ -28,4 +28,4 @@ class OnPremiseVMFactory extends VMFactory {
   }
 }
 
-module.exports = OnPremiseVMFactory;
+module.exports = { OnPremiseVMFactory } ;

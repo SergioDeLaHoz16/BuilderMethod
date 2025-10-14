@@ -1,5 +1,5 @@
 const VMFactory = require('../VMFactory');
-const GCPVirtualMachine = require('../../models/GCPVirtualMachine');
+const GCPVirtualMachine = require('../../models/gcp/GCPVirtualMachine');
 
 /**
  * Factory concreto para crear máquinas virtuales de Google Cloud Platform
@@ -28,4 +28,4 @@ class GCPVMFactory extends VMFactory {
   }
 }
 
-module.exports = GCPVMFactory;
+module.exports =  { GCPVMFactory } ;

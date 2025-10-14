@@ -1,4 +1,5 @@
-const IDisk = require('./IDisk');
+
+const IDisk = require('../interfaces/IDisk');
 
 /**
  * Implementación concreta de disco para infraestructura On-Premise

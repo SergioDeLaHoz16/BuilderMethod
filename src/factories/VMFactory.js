@@ -16,4 +16,4 @@ class VMFactory {
   }
 }
 
-module.exports = VMFactory;
+module.exports =  VMFactory ;

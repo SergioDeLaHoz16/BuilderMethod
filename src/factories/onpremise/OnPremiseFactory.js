@@ -1,7 +1,7 @@
 const AbstractFactory = require('../AbstractFactory');
-const OnPremiseVirtualMachine = require('../../models/OnPremiseVirtualMachine');
-const OnPremiseNetwork = require('../../models/OnPremiseNetwork');
-const OnPremiseDisk = require('../../models/OnPremiseDisk');
+const OnPremiseVirtualMachine = require('../../models/onpremise/OnPremiseVirtualMachine');
+const OnPremiseNetwork = require('../../models/onpremise/OnPremiseNetwork');
+const OnPremiseDisk = require('../../models/onpremise/OnPremiseDisk');
 
 /**
  * Factory concreto para crear familia completa de recursos On-Premise
@@ -73,4 +73,4 @@ class OnPremiseFactory extends AbstractFactory {
   }
 }
 
-module.exports = { OnPremiseFactory };
+module.exports = OnPremiseFactory;

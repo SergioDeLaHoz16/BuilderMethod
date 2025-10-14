@@ -1,10 +1,11 @@
 const supabase = require('../config/database');
-const { AWSFactory } = require('../factories/AWSFactory');
-const { AzureFactory } = require('../factories/AzureFactory');
-const { GCPFactory } = require('../factories/GCPFactory');
-const { OnPremiseFactory } = require('../factories/OnPremiseFactory');
+const AWSFactory = require('../factories/aws/AWSFactory');
+const AzureFactory = require('../factories/azure/AzureFactory');
+const GCPFactory = require('../factories/gcp/GCPFactory');
+const OnPremiseFactory = require('../factories/onpremise/OnPremiseFactory');
 const ProvisioningResult = require('../models/ProvisioningResult');
 const Logger = require('./Logger');
+const VMReconstructor = require('../utils/VMReconstructor');
 
 
 /**
@@ -152,9 +153,9 @@ class ProvisioningService {
   }
 
   /**
-   * Obtiene una máquina virtual por su ID
+   * Obtiene una máquina virtual por su ID y la reconstruye como objeto
    * @param {string} vmId - ID de la máquina virtual
-   * @returns {Promise<Object>}
+   * @returns {Promise<IVirtualMachine>}
    */
   async getVMById(vmId) {
     const { data, error } = await supabase
@@ -171,7 +172,7 @@ class ProvisioningService {
       throw new Error(`VM con ID '${vmId}' no encontrada`);
     }
 
-    return data;
+    return VMReconstructor.reconstructVM(data);
   }
 
   /**
@@ -190,6 +191,44 @@ class ProvisioningService {
     }
 
     return data;
+  }
+
+  /**
+   * Guarda una VM clonada en la base de datos
+   * Usado por el patrón Prototype para persistir VMs clonadas
+   * @param {IVirtualMachine} vm - Instancia de máquina virtual
+   * @returns {Promise<ProvisioningResult>}
+   */
+  async saveVM(vm) {
+    try {
+      const { error: vmError } = await supabase
+        .from('virtual_machines')
+        .insert(vm.toJSON());
+
+      if (vmError) {
+        throw new Error(`Error al guardar VM: ${vmError.message}`);
+      }
+
+      const result = new ProvisioningResult(
+        'success',
+        vm.getId(),
+        vm.toJSON().provider,
+        new Date()
+      );
+
+      const { data: vmData } = await supabase
+        .from('virtual_machines')
+        .select('id')
+        .eq('vm_id', vm.getId())
+        .maybeSingle();
+
+      await Logger.logResult(result, vmData?.id, { source: 'prototype-clone' });
+
+      return result;
+
+    } catch (error) {
+      throw new Error(`Error al guardar VM clonada: ${error.message}`);
+    }
   }
 }
 

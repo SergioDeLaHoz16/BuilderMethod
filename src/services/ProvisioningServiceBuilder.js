@@ -13,10 +13,11 @@ const { AzureVirtualMachineBuilder } = require('../builders/AzureVirtualMachineB
 const { GCPVirtualMachineBuilder } = require('../builders/GCPVirtualMachineBuilder');
 const { OnPremiseVirtualMachineBuilder } = require('../builders/OnPremiseVirtualMachineBuilder');
 
-const { AWSFactory } = require('../factories/AWSFactory');
-const { AzureFactory } = require('../factories/AzureFactory');
-const { GCPFactory } = require('../factories/GCPFactory');
-const { OnPremiseFactory } = require('../factories/OnPremiseFactory');
+const AWSFactory = require('../factories/aws/AWSFactory');
+const AzureFactory = require('../factories/azure/AzureFactory');
+const GCPFactory = require('../factories/gcp/GCPFactory');
+const OnPremiseFactory = require('../factories/onpremise/OnPremiseFactory');
+
 
 const Director = require('../directors/Director');
 const ProvisioningResult = require('../models/ProvisioningResult');

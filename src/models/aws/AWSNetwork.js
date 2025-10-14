@@ -60,4 +60,4 @@ class AWSNetwork extends INetwork {
   }
 }
 
-module.exports = AWSNetwork;
+module.exports =  AWSNetwork ;

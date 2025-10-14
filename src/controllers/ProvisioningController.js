@@ -1,19 +1,20 @@
 const ProvisioningService = require('../services/ProvisioningService');
 const ProvisioningServiceBuilder = require('../services/ProvisioningServiceBuilder');
+const PrototypeRegistry = require('../patterns/PrototypeRegistry');
 
 /**
  * Controlador REST para gestionar operaciones de aprovisionamiento
  * Aplica el patrón MVC (Controlador)
- * Soporta dos modos de aprovisionamiento:
+ * Soporta tres modos de aprovisionamiento:
  * - Abstract Factory (aprovisionamiento directo)
  * - Builder + Director (aprovisionamiento con tipos predefinidos)
+ * - Prototype (clonación de plantillas pre-registradas)
  */
 class ProvisioningController {
   constructor() {
-    // Servicio con Abstract Factory
     this.service = new ProvisioningService();
-    // Servicio con Builder + Director
     this.serviceBuilder = new ProvisioningServiceBuilder();
+    this.prototypeRegistry = new PrototypeRegistry();
   }
 
   /**
@@ -180,6 +181,134 @@ class ProvisioningController {
 
     } catch (error) {
       console.error('❌ Error en provisionWithBuilder:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Registra una VM existente como plantilla prototype
+   * POST /api/prototypes/register
+   * @param {Request} req - Request de Express
+   * @param {Response} res - Response de Express
+   */
+  async registerPrototype(req, res) {
+    try {
+      const { vmId, templateName } = req.body;
+
+      if (!vmId || !templateName) {
+        return res.status(400).json({
+          error: 'Parámetros inválidos',
+          message: 'Se requieren "vmId" y "templateName"'
+        });
+      }
+
+      const vm = await this.service.getVMById(vmId);
+      this.prototypeRegistry.registerPrototype(templateName, vm);
+
+      return res.status(201).json({
+        status: 'success',
+        message: `Plantilla "${templateName}" registrada correctamente`,
+        templateName,
+        vmId
+      });
+
+    } catch (error) {
+      return res.status(500).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Clona una VM desde una plantilla prototype registrada
+   * POST /api/prototypes/clone
+   * @param {Request} req - Request de Express
+   * @param {Response} res - Response de Express
+   */
+  async cloneFromPrototype(req, res) {
+    try {
+      const { templateName } = req.body;
+
+      if (!templateName) {
+        return res.status(400).json({
+          error: 'Parámetros inválidos',
+          message: 'Se requiere "templateName"'
+        });
+      }
+
+      const clonedVM = this.prototypeRegistry.clonePrototype(templateName);
+
+      const result = await this.service.saveVM(clonedVM);
+
+      return res.status(201).json({
+        status: 'success',
+        message: `VM clonada desde plantilla "${templateName}"`,
+        vmId: result.vmId,
+        templateName,
+        timestamp: result.timestamp
+      });
+
+    } catch (error) {
+      return res.status(500).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Lista todas las plantillas prototype registradas
+   * GET /api/prototypes
+   * @param {Request} req - Request de Express
+   * @param {Response} res - Response de Express
+   */
+  async listPrototypes(req, res) {
+    try {
+      const templates = this.prototypeRegistry.getPrototypeKeys();
+
+      return res.status(200).json({
+        status: 'success',
+        count: templates.length,
+        data: templates
+      });
+
+    } catch (error) {
+      return res.status(500).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
+
+  /**
+   * Elimina una plantilla prototype registrada
+   * DELETE /api/prototypes/:templateName
+   * @param {Request} req - Request de Express
+   * @param {Response} res - Response de Express
+   */
+  async unregisterPrototype(req, res) {
+    try {
+      const { templateName } = req.params;
+
+      if (!this.prototypeRegistry.hasPrototype(templateName)) {
+        return res.status(404).json({
+          status: 'error',
+          message: `Plantilla "${templateName}" no encontrada`
+        });
+      }
+
+      this.prototypeRegistry.unregisterPrototype(templateName);
+
+      return res.status(200).json({
+        status: 'success',
+        message: `Plantilla "${templateName}" eliminada correctamente`
+      });
+
+    } catch (error) {
       return res.status(500).json({
         status: 'error',
         message: error.message

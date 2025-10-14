@@ -1,4 +1,4 @@
-const INetwork = require('./INetwork');
+const INetwork = require('../interfaces/INetwork');
 
 /**
  * Implementación concreta de red para Azure

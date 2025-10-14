@@ -61,4 +61,4 @@ class AWSDisk extends IDisk {
   }
 }
 
-module.exports = AWSDisk;
+module.exports =  AWSDisk ;

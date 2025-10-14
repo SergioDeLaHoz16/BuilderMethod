@@ -41,4 +41,4 @@ class AbstractFactory {
   }
 }
 
-module.exports = AbstractFactory;
+module.exports =  AbstractFactory ;

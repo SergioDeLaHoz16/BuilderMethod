@@ -1,8 +1,11 @@
-const IVirtualMachine = require('./IVirtualMachine');
+const IVirtualMachine = require('../interfaces/IVirtualMachine');
+// const IPrototype = require('../interfaces/IPrototype');
 
+const IPrototype = require('../interfaces/IPrototype');
 /**
  * Implementación concreta de máquina virtual On-Premise
  * Representa una VM local usando VMWare o KVM
+ * Implementa el patrón Prototype para permitir la clonación
  */
 class OnPremiseVirtualMachine extends IVirtualMachine {
   /**
@@ -35,6 +38,28 @@ class OnPremiseVirtualMachine extends IVirtualMachine {
 
   getStatus() {
     return this.status;
+  }
+
+  /**
+   * Implementación del patrón Prototype
+   * Clona la máquina virtual actual creando una nueva instancia con los mismos atributos
+   * @returns {OnPremiseVirtualMachine} - Nueva instancia clonada
+   */
+  clone() {
+    const { v4: uuidv4 } = require('crypto').randomUUID ? { v4: () => require('crypto').randomUUID() } : require('uuid');
+    const newId = uuidv4 ? uuidv4() : `onprem-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    return new OnPremiseVirtualMachine(
+      newId,
+      this.instanceType,
+      this.vcpus,
+      this.memoryGB,
+      this.hypervisor,
+      this.datacenter,
+      this.memoryOptimization,
+      this.diskOptimization,
+      this.keyPairName
+    );
   }
 
   /**

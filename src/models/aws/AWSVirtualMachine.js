@@ -1,8 +1,10 @@
 const IVirtualMachine = require('../interfaces/IVirtualMachine');
+const IPrototype = require('../interfaces/IPrototype');
 
 /**
  * Implementación concreta de máquina virtual para AWS
  * Representa una instancia EC2 de Amazon Web Services
+ * Implementa el patrón Prototype para permitir la clonación
  */
 class AWSVirtualMachine extends IVirtualMachine {
   /**
@@ -38,6 +40,29 @@ class AWSVirtualMachine extends IVirtualMachine {
 
   getStatus() {
     return this.status;
+  }
+
+  /**
+   * Implementación del patrón Prototype
+   * Clona la máquina virtual actual creando una nueva instancia con los mismos atributos
+   * @returns {AWSVirtualMachine} - Nueva instancia clonada
+   */
+  clone() {
+    const { v4: uuidv4 } = require('crypto').randomUUID ? { v4: () => require('crypto').randomUUID() } : require('uuid');
+    const newId = uuidv4 ? uuidv4() : `aws-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    return new AWSVirtualMachine(
+      newId,
+      this.instanceType,
+      this.region,
+      this.vpcId,
+      this.ami,
+      this.vcpus,
+      this.memoryGB,
+      this.memoryOptimization,
+      this.diskOptimization,
+      this.keyPairName
+    );
   }
 
   /**

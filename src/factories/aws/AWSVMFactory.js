@@ -28,4 +28,4 @@ class AWSVMFactory extends VMFactory {
   }
 }
 
-module.exports = AWSVMFactory;
+module.exports = { AWSVMFactory };

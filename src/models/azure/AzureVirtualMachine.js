@@ -1,8 +1,10 @@
-const IVirtualMachine = require('./IVirtualMachine');
+const IVirtualMachine = require('../interfaces/IVirtualMachine');
+const IPrototype = require('../interfaces/IPrototype');
 
 /**
  * Implementación concreta de máquina virtual para Azure
  * Representa una VM de Microsoft Azure
+ * Implementa el patrón Prototype para permitir la clonación
  */
 class AzureVirtualMachine extends IVirtualMachine {
   /**
@@ -38,6 +40,29 @@ class AzureVirtualMachine extends IVirtualMachine {
 
   getStatus() {
     return this.status;
+  }
+
+  /**
+   * Implementación del patrón Prototype
+   * Clona la máquina virtual actual creando una nueva instancia con los mismos atributos
+   * @returns {AzureVirtualMachine} - Nueva instancia clonada
+   */
+  clone() {
+    const { v4: uuidv4 } = require('crypto').randomUUID ? { v4: () => require('crypto').randomUUID() } : require('uuid');
+    const newId = uuidv4 ? uuidv4() : `azure-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    return new AzureVirtualMachine(
+      newId,
+      this.vmSize,
+      this.location,
+      this.resourceGroup,
+      this.imageReference,
+      this.vcpus,
+      this.memoryGB,
+      this.memoryOptimization,
+      this.diskOptimization,
+      this.keyPairName
+    );
   }
 
   /**

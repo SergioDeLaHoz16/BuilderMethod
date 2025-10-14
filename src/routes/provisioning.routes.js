@@ -357,4 +357,126 @@ router.get('/logs', (req, res) => controller.getLogs(req, res));
  */
 router.post('/provision/builder', (req, res) => controller.provisionWithBuilder(req, res));
 
+/**
+ * @swagger
+ * /api/prototypes/register:
+ *   post:
+ *     summary: Registra una VM existente como plantilla prototype
+ *     description: Permite guardar una VM como plantilla reutilizable para clonar
+ *     tags: [Prototypes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - vmId
+ *               - templateName
+ *             properties:
+ *               vmId:
+ *                 type: string
+ *                 description: ID de la VM a registrar como plantilla
+ *               templateName:
+ *                 type: string
+ *                 description: Nombre único para la plantilla
+ *           example:
+ *             vmId: "aws-vm-123456"
+ *             templateName: "aws-web-server-template"
+ *     responses:
+ *       201:
+ *         description: Plantilla registrada exitosamente
+ *       400:
+ *         description: Parámetros inválidos
+ *       500:
+ *         description: Error al registrar plantilla
+ */
+router.post('/prototypes/register', (req, res) => controller.registerPrototype(req, res));
+
+/**
+ * @swagger
+ * /api/prototypes/clone:
+ *   post:
+ *     summary: Clona una VM desde una plantilla prototype
+ *     description: Crea una nueva VM copiando una plantilla registrada
+ *     tags: [Prototypes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - templateName
+ *             properties:
+ *               templateName:
+ *                 type: string
+ *                 description: Nombre de la plantilla a clonar
+ *           example:
+ *             templateName: "aws-web-server-template"
+ *     responses:
+ *       201:
+ *         description: VM clonada exitosamente
+ *       400:
+ *         description: Parámetros inválidos
+ *       404:
+ *         description: Plantilla no encontrada
+ *       500:
+ *         description: Error al clonar VM
+ */
+router.post('/prototypes/clone', (req, res) => controller.cloneFromPrototype(req, res));
+
+/**
+ * @swagger
+ * /api/prototypes:
+ *   get:
+ *     summary: Lista todas las plantillas prototype registradas
+ *     description: Obtiene los nombres de todas las plantillas disponibles
+ *     tags: [Prototypes]
+ *     responses:
+ *       200:
+ *         description: Lista de plantillas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 count:
+ *                   type: integer
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.get('/prototypes', (req, res) => controller.listPrototypes(req, res));
+
+/**
+ * @swagger
+ * /api/prototypes/{templateName}:
+ *   delete:
+ *     summary: Elimina una plantilla prototype
+ *     description: Elimina una plantilla del registro
+ *     tags: [Prototypes]
+ *     parameters:
+ *       - in: path
+ *         name: templateName
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Nombre de la plantilla a eliminar
+ *     responses:
+ *       200:
+ *         description: Plantilla eliminada exitosamente
+ *       404:
+ *         description: Plantilla no encontrada
+ *       500:
+ *         description: Error al eliminar plantilla
+ */
+router.delete('/prototypes/:templateName', (req, res) => controller.unregisterPrototype(req, res));
+
 module.exports = router;
